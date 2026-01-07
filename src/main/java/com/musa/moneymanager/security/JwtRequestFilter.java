@@ -33,6 +33,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             email = jwtUtil.getUsernameFromToken(jwt);
         }
 
+        String path = request.getRequestURI();
+
+        // 🔥 IMPORTANT: full path includes context-path
+        if (path.equals("/api/v1/register") ||
+                path.equals("/api/v1/login") ||
+                path.equals("/api/v1/activation") ||
+                path.equals("/api/v1/status") ||
+                path.equals("/api/v1/health")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
             if (jwtUtil.validateToken(jwt,userDetails)){
