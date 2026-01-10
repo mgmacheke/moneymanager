@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             email = jwtUtil.getUsernameFromToken(jwt);
         }
 
-        String path = request.getRequestURI();
+/*        String path = request.getRequestURI();
 
         // 🔥 IMPORTANT: full path includes context-path
         if (path.equals("/api/v1/register") ||
@@ -44,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
             return;
-        }
+        }*/
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
